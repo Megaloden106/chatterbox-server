@@ -1,0 +1,199 @@
+
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+  -webkit-appearance: button;
+}
+
+body {
+    background: #eee;
+    text-align: center;
+    padding: 0 25px;
+    font-family: arial, sans-serif;
+}
+
+#main, #roombar {
+    width: 800px;
+    margin: auto;
+    text-align: left;
+    background: white;
+    padding: 50px 60px;
+    border: solid #ddd;
+    border-width: 0 1px 1px 1px;
+}
+
+
+#columns {
+    width: 920px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+}
+.message{
+    width: 300px;
+    min-height: 100px;
+    border-radius: 10px;
+    border: 3px solid black;
+    margin: 5px auto;
+    background-color: lightgrey;
+}
+.username{
+    display:inline-block;
+    float:left;
+    margin: 5px 5px 5px 20px;
+}
+
+.roomname{
+    display:inline-block;
+    float: right;
+    margin: 5px 20px 5px 5px;
+}
+
+.text{
+    display: inline-block;
+    width: 260px;
+    margin: 5px 20px 15px 20px;
+    text-align: left;
+    word-wrap: break-word;
+    
+}
+.profile {
+    grid-column: 1; 
+    background-color: lightblue;
+    padding: 0;
+    margin: 0;
+}
+#chats {
+    grid-column: 2; 
+    background-color: grey
+}
+
+#main h1 {
+    margin-top: 0;
+    font-size: 35px;
+    margin-bottom: 5px;
+    padding: 5px;
+}
+
+#main h1 span {
+    font-style:italic;
+}
+
+#main ul {
+    padding-left: 20px;
+}
+
+#main .error {
+    border: 1px solid red;
+    background: #FDEFF0;
+    padding: 20px;
+}
+
+#main .success {
+    margin-top: 25px;
+}
+
+#main .success code {
+    font-size: 12px;
+    color: green;
+    line-height: 13px;
+}
+
+form {
+    padding: 20px;
+    padding-left: 0;
+    margin-bottom: 20px;
+}
+
+form input[type=text] {
+    margin-right: 10px;
+    font-size: 12px;
+    padding: 5px;
+}
+
+.chat {
+    padding: 5px;
+    margin-bottom: 5px;
+    background-color: #eee;
+}
+
+.chat .username {
+    font-weight: 800;
+}
+
+.chat:hover {
+    background-color: #ddd;
+}
+
+.spinner {
+    float: right;
+    height: 46px;
+    margin-bottom: 5px;
+}
+
+.spinner img {
+    padding: 10px;
+}
+
+/*
+New Post
+*/
+
+#roombar {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    padding: 20px 60px;
+}
+
+.newPost {
+    grid-column: 2;
+    
+}
+
+#newText {
+    display: inline-block;
+    width: 300px;
+    height: 100px;
+    resize: none;
+    position: relative;
+    /*left: 50px;*/
+}
+
+fieldset .submit {
+    height: 40px;
+    width: 75px;
+    background-color: #117182de;
+    border-radius: 15px;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    position: relative;
+    top: -12px;
+    box-shadow: 3px 2px 2px 1px #00000042;
+}
+
+.friend {
+    font-weight: bold
+}
+
+.rooms button {
+    height: 20px;
+    display: block;
+}
+
+.rooms {
+    overflow-y: scroll;
+    height: 150px;
+}
+
+fieldset .roomTextBox{
+    width: 178px;
+    height: 10px;
+}
+
+fieldset .text-area {
+    width: 400px;
+    height: 100px;
+    resize: none;
+}

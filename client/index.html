@@ -1,0 +1,111 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>chatterbox</title>
+    <link rel="stylesheet" href="styles/styles.css">
+
+    <!-- dependencies -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src = "bower_components/underscore/underscore.js"></script>
+    <script>
+      // YOU DO NOT NEED TO EDIT THIS CODE
+if (!/(&|\?)username=/.test(window.location.search)) {
+  var newSearch = window.location.search;
+  if (newSearch !== '' & newSearch !== '?') {
+    newSearch += '&';
+  }
+  newSearch += 'username=' + (prompt('What is your name?') || 'anonymous');
+  window.location.search = newSearch;
+}
+    </script>
+    <!-- your scripts -->
+    <script src="env/config.js"></script>
+    <script src="scripts/app.js"></script>
+  </head>
+  <body>
+    <div id="main">
+      <h1>chatterbox</h1>
+      <!-- Your HTML goes here! -->
+<<<<<<< HEAD
+    </div>
+    
+    <div id="roombar">
+      <div class="rooms">
+        <h4>Room Filter</h4>
+      </div>
+      <div class="newPost">
+       <!--  <textarea id="newText"> </textarea>
+        <button class="submit" onclick="app.handleSubmit()">Submit</button> -->
+        <form method="post" class="send" action="javascript: app.handleSubmit();">
+          <fieldset class="textMessage">
+            <!-- room dropdown -->
+            <!-- need a list of all rooms -->
+            <select id="select" name="roomname">
+              <option value ="Create New Room" >Create New Room</option>
+            </select>
+            <!-- room selector -->
+            <label>New Room</label>
+            <input class="roomTextBox" type="text" name="newRoom">
+            <!-- text area -->
+            <textarea class="text-area" type="text-area" name="text"></textarea>
+            <!-- submit button -->
+            <input type="submit" value="submit" class="submit">
+            
+          </fieldset>
+        </form>
+      </div>
+    </div>
+    <div id = "columns">
+      <section class='profile'>
+        <h3>Profile</h3>
+        <!-- username -->
+        <h2 class="currentUser">Test</h2>
+        <!-- Change Username -->
+        <button class="changeUser" onclick="changeUser()">Change Username</button>
+        <!-- friend List -->
+        <div id="friendList"></div>
+        <!-- Profile Pic -->
+        
+        <!-- Allow Sort by friend? -->
+      </section>
+      <section id='chats'>
+        <div class='message'>
+          <p class ='username'>username</p>
+          <p class ='roomname'>room</p>
+            <div class ='text'>
+              text
+            </div>
+        </div>
+      </section>
+    </div>
+  <script> 
+  $(document).ready(app.init());
+  var changeUser = function() {
+    window.location.search = '';
+
+  }
+  </script>  
+  </body>
+  
+=======
+
+      <div class="spinner"><img src="images/spiffygif_46x46.gif"></div>
+      <div id="rooms">
+        Room:
+        <select id="roomSelect">
+        </select>
+      </div>
+      <form action="#" id="send" method="post">
+        <input type="text" name="message" id="message"/>
+        <input type="submit" name="submit" class="submit"/>
+      </form>    </div>
+    <div id="chats"></div>
+
+    <script>
+      $(function(){
+        app.init()
+      });
+    </script>  </body>
+>>>>>>> d845bbad78c96b5d8832bf5feed219b5920963b4
+</html>
