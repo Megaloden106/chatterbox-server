@@ -3,7 +3,7 @@ var app = {
 
   //TODO: The current 'handleUsernameClick' function just toggles the class 'friend'
   //to all messages sent by the user
-  server: 'http://parse.CAMPUS.hackreactor.com/chatterbox/classes/messages',
+  server: 'http://127.0.0.1:3000/classes/messages',
   username: 'anonymous',
   roomname: 'lobby',
   lastMessageId: 0,
@@ -47,6 +47,7 @@ var app = {
       success: function (data) {
         // Clear messages input
         app.$message.val('');
+        console.log()
 
         // Trigger a fetch to update the messages, pass true to animate
         app.fetch();
