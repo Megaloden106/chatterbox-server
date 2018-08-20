@@ -71,4 +71,4 @@ var defaultCorsHeaders = {
   'access-control-max-age': 10 // Seconds.
 };
 
-export.requestHandler = requestHandler
+module.exports.requestHandler = requestHandler;
