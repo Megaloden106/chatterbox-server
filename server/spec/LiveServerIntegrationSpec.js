@@ -156,7 +156,7 @@ describe('server', function() {
   
   // custom test 1
   // Reverse Order
-  it('Should accept an \'OPTIONS\' request with a order parameter', function(done) {
+  it('Should accept an \'GET\' request with a order parameter', function(done) {
     request({
       method: 'POST',
       uri: 'http://127.0.0.1:3000/classes/messages',
@@ -182,7 +182,7 @@ describe('server', function() {
   
   // custom test 2
   // limit
-  it('Should accept an \'OPTIONS\' request with a limit parameter', function(done) {
+  it('Should accept an \'GET\' request with a limit parameter', function(done) {
     request({
       method: 'POST',
       uri: 'http://127.0.0.1:3000/classes/messages',
@@ -207,7 +207,7 @@ describe('server', function() {
   
   // custom test 3
   // skip
-  it('Should accept an \'OPTIONS\' request with a skip parameter', function(done) {
+  it('Should accept an \'GET\' request with a skip parameter', function(done) {
     request({
       method: 'POST',
       uri: 'http://127.0.0.1:3000/classes/messages',
@@ -259,7 +259,7 @@ describe('server', function() {
   
   // custom test 5
   // keys
-  it('Should accept an \'OPTIONS\' request with a keys parameter', function(done) {
+  it('Should accept an \'GET\' request with a keys parameter', function(done) {
     request({
       method: 'POST',
       uri: 'http://127.0.0.1:3000/classes/messages',
@@ -268,7 +268,7 @@ describe('server', function() {
         text: 'Do my bidding!',
         roomname: '4chan'
       }
-    });
+    }); 
     
     var requestParams = {
       method: 'GET',

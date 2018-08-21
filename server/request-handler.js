@@ -76,28 +76,15 @@ var requestHandler = function(request, response) {
       };
       if (query.order) {
         queryResults.results.sort((a, b) => {
-          let sort = '-objectId';
+          let sort = query.order;
           if (sort.includes('createdAt')) {
             return sort[0] === '-' 
-              ? Date.parse(b[sort.slice(1)]) - Date.parse(a[sort.slice(1)]) 
-              : Date.parse(a[sort]) - Date.parse(b[sort]);
+              ? b[sort.slice(1)].getTime() - a[sort.slice(1)].getTime() 
+              : a[sort].getTime() - b[sort].getTime();
           } else {
             return sort[0] === '-' ? b[sort.slice(1)] - a[sort.slice(1)] : a[sort] - b[sort];
           }
         });
-        // queryResults.results.sort((a, b) => {
-        //   let sort = query.order;
-        //   console.log(a, b);
-        //   console.log('a', Date.parse(a[sort.slice(1)]));
-        //   console.log('b', Date.parse(b[sort.slice(1)]));
-        //   if (sort.includes('createdAt')) {
-        //     return sort[0] === '-' 
-        //       ? Date.parse(b[sort.slice(1)]) - Date.parse(a[sort.slice(1)]) 
-        //       : Date.parse(a[sort]) - Date.parse(b[sort]);
-        //   } else {
-        //     return sort[0] === '-' ? b[sort.slice(1)] - a[sort.slice(1)] : a[sort] - b[sort];
-        //   }
-        // });
       }
       if (query.key) {
         queryResults.results = queryResults.results.filter((object) => {
@@ -115,6 +102,9 @@ var requestHandler = function(request, response) {
       response.writeHead(200, headers);
       response.end(JSON.stringify(data));
     }
+  } else if (method === 'OPTIONS' && url.includes('/classes/messages')) {
+    response.writeHead(200, headers);
+    response.end();
   } else {
     headers['Content-Type'] = 'text/plain';
     response.writeHead(404, headers);
