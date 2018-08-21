@@ -41,7 +41,7 @@ describe('server', function() {
         username: 'Jono',
         text: 'Do my bidding!'}
     };
-
+    
     request(requestParams, function(error, response, body) {
       expect(response.statusCode).to.equal(201);
       done();

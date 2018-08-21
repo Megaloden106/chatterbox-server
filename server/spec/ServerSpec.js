@@ -61,7 +61,6 @@ describe('Node Server Request Listener Function', function() {
       username: 'Jono',
       text: 'Do my bidding!'
     };
-    debugger;
     var req = new stubs.request('/classes/messages', 'POST', stubMsg);
     var res = new stubs.response();
 
