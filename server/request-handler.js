@@ -38,15 +38,9 @@ const params = {
   order: (data, query) => {
     data.results.sort((a, b) => {
       let sort = query.order;
-      if (sort.includes('createdAt')) {
-        return sort[0] === '-' 
-          ? b[sort.slice(1)].getTime() - a[sort.slice(1)].getTime() 
-          : a[sort].getTime() - b[sort].getTime();
-      } else {
-        return sort[0] === '-' 
-          ? b[sort.slice(1)] - a[sort.slice(1)] 
-          : a[sort] - b[sort];
-      }
+      return sort[0] === '-' 
+        ? b[sort.slice(1)] - a[sort.slice(1)] 
+        : a[sort] - b[sort];
     });  
   },
   key: (data, query) => {
