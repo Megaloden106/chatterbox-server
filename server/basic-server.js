@@ -15,7 +15,7 @@ var port = 3000;
 // special address that always refers to localhost.
 var ip = '127.0.0.1';
 
-
+debugger;
 
 // We use node's http module to create a server.
 //
@@ -40,3 +40,4 @@ server.listen(port, ip);
 // possibility of serving more requests. To stop your server, hit
 // Ctrl-C on the command line.
 
+module.exports.server = server;
