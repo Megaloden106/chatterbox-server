@@ -132,7 +132,7 @@ describe('server', function() {
   });
 
 
-  it('Should accept a \'GET\' request with options', function(done) {
+  it('Should accept a \'GET\' request with a query', function(done) {
     request({
       method: 'POST',
       uri: 'http://127.0.0.1:3000/classes/messages',
@@ -143,11 +143,8 @@ describe('server', function() {
     });
     
     var requestParams = {
-      method: 'OPTIONS',
-      uri: 'http://127.0.0.1:3000/classes/messages',
-      data: {
-        order: '-createdAt'
-      },
+      method: 'GET',
+      uri: 'http://127.0.0.1:3000/classes/messages?order=-createdAt'
     };
     
     request(requestParams, function(error, response, body) {
@@ -170,11 +167,8 @@ describe('server', function() {
     });
     
     var requestParams = {
-      method: 'OPTIONS',
-      uri: 'http://127.0.0.1:3000/classes/messages',
-      data: {
-        order: '-createdAt'
-      },
+      method: 'GET',
+      uri: 'http://127.0.0.1:3000/classes/messages?order=-createdAt'
     };
     
     request(requestParams, function(error, response, body) {
@@ -199,11 +193,8 @@ describe('server', function() {
     });
     
     var requestParams = {
-      method: 'OPTIONS',
-      uri: 'http://127.0.0.1:3000/classes/messages',
-      data: {
-        limit: '5'
-      },
+      method: 'GET',
+      uri: 'http://127.0.0.1:3000/classes/messages?limit=5'
     };
     
     request(requestParams, function(error, response, body) {
@@ -227,12 +218,8 @@ describe('server', function() {
     });
     
     var requestParams = {
-      method: 'OPTIONS',
-      uri: 'http://127.0.0.1:3000/classes/messages',
-      data: {
-        limit: '100',
-        skip: '5'
-      },
+      method: 'GET',
+      uri: 'http://127.0.0.1:3000/classes/messages?limit=100&skip=5'
     };
     
     request(requestParams, function(error, response, body) {
@@ -284,11 +271,8 @@ describe('server', function() {
     });
     
     var requestParams = {
-      method: 'OPTIONS',
-      uri: 'http://127.0.0.1:3000/classes/messages',
-      data: {
-        key: "roomname"
-      },
+      method: 'GET',
+      uri: 'http://127.0.0.1:3000/classes/messages?key=roomname',
     };
     
     request(requestParams, function(error, response, body) {

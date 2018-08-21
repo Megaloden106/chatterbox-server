@@ -38,47 +38,83 @@ var requestHandler = function(request, response) {
   // Adding more logging to your server can be an easy way to get passive
   // debugging help, but you should always be careful about leaving stray
   // console.logs in your code.
-  var { headers, method, url } = request;
+  var url = require('url');
+  var query = url.parse(request.url, true).query;
   
-  console.log(url);
+  var { method, url } = request;
   
   console.log('Serving request type ' + method + ' for url ' + url);
   var headers = defaultCorsHeaders;
   headers['Content-Type'] = 'text/json';
     
   if (method === 'POST' && url.includes('/classes/messages')) {
+    let requestBody;
     request.on('error', (err) => {
       console.error(err);
     }).on('data', (chunk) => {
-      let incoming = JSON.parse(chunk);
-      incoming.createAt = new Date();
-      incoming.objectId = data.results.length;
-      data.results.push(incoming);
+      requestBody = JSON.parse(chunk);
+    }).on('end', () => {
+      requestBody.createdAt = new Date();
+      requestBody.objectId = data.results.length;
+      data.results.push(requestBody);
       response.writeHead(201, headers);
       let resData = {
-        createdAt: incoming.createAt,
-        objectId: incoming.objectId
+        createdAt: requestBody.createAt,
+        objectId: requestBody.objectId
       };
       response.end(JSON.stringify(resData));
     });
   } else if (method === 'GET' && url.includes('/classes/messages')) {
-    console.log('GET');
     request.on('error', (err) => {
       console.error(err);
     });
-    response.writeHead(200, headers);
-    response.end(JSON.stringify(data));
-    // add on data for filter
-  } else if (method === 'OPTIONS' && url.includes('/classes/messages')) {
-    console.log('OPTIONS');
-    request.on('error', (err) => {
-      console.error(err);
-    }).on('data', (options) => {
-      // TODO: filter by data parameters     
-    });
-    response.writeHead(203, headers);
-    response.end(JSON.stringify(data));
-    // add on data for filter
+    if (Object.keys(query).length > 0) {
+      // add on data for filter
+      response.writeHead(203, headers);
+      let queryResults = {
+        results: data.results.slice()
+      };
+      if (query.order) {
+        queryResults.results.sort((a, b) => {
+          let sort = '-objectId';
+          if (sort.includes('createdAt')) {
+            return sort[0] === '-' 
+              ? Date.parse(b[sort.slice(1)]) - Date.parse(a[sort.slice(1)]) 
+              : Date.parse(a[sort]) - Date.parse(b[sort]);
+          } else {
+            return sort[0] === '-' ? b[sort.slice(1)] - a[sort.slice(1)] : a[sort] - b[sort];
+          }
+        });
+        // queryResults.results.sort((a, b) => {
+        //   let sort = query.order;
+        //   console.log(a, b);
+        //   console.log('a', Date.parse(a[sort.slice(1)]));
+        //   console.log('b', Date.parse(b[sort.slice(1)]));
+        //   if (sort.includes('createdAt')) {
+        //     return sort[0] === '-' 
+        //       ? Date.parse(b[sort.slice(1)]) - Date.parse(a[sort.slice(1)]) 
+        //       : Date.parse(a[sort]) - Date.parse(b[sort]);
+        //   } else {
+        //     return sort[0] === '-' ? b[sort.slice(1)] - a[sort.slice(1)] : a[sort] - b[sort];
+        //   }
+        // });
+      }
+      if (query.key) {
+        queryResults.results = queryResults.results.filter((object) => {
+          return object[query.key];
+        });
+      }
+      if (query.skip) {
+        queryResults.results.splice(0, query.skip);
+      }
+      if (query.limit) {
+        queryResults.results = queryResults.results.slice(0, query.limit);
+      }
+      response.end(JSON.stringify(queryResults));
+    } else {
+      response.writeHead(200, headers);
+      response.end(JSON.stringify(data));
+    }
   } else {
     headers['Content-Type'] = 'text/plain';
     response.writeHead(404, headers);
