@@ -16,6 +16,13 @@ const data = {
   results: []
 };
 
+var defaultCorsHeaders = {
+  'access-control-allow-origin': '*',
+  'access-control-allow-methods': 'GET, POST, PUT, DELETE, OPTIONS',
+  'access-control-allow-headers': 'content-type, accept',
+  'access-control-max-age': 10 // Seconds.
+};
+
 var requestHandler = function(request, response) {
   // Request and Response come from node's http module.
   //
@@ -40,25 +47,36 @@ var requestHandler = function(request, response) {
   headers['Content-Type'] = 'text/json';
     
   if (method === 'POST' && url.includes('/classes/messages')) {
-    console.log(request.data);
     request.on('error', (err) => {
       console.error(err);
     }).on('data', (chunk) => {
       let incoming = JSON.parse(chunk);
-      incoming.createOn = new Date();
+      incoming.createAt = new Date();
+      incoming.objectId = data.results.length;
       data.results.push(incoming);
       response.writeHead(201, headers);
       let resData = {
-        createdAt: incoming.createOn,
-        objectId: data.results.length - 1
+        createdAt: incoming.createAt,
+        objectId: incoming.objectId
       };
       response.end(JSON.stringify(resData));
     });
   } else if (method === 'GET' && url.includes('/classes/messages')) {
+    console.log('GET');
     request.on('error', (err) => {
       console.error(err);
     });
     response.writeHead(200, headers);
+    response.end(JSON.stringify(data));
+    // add on data for filter
+  } else if (method === 'OPTIONS' && url.includes('/classes/messages')) {
+    console.log('OPTIONS');
+    request.on('error', (err) => {
+      console.error(err);
+    }).on('data', (options) => {
+      // TODO: filter by data parameters     
+    });
+    response.writeHead(203, headers);
     response.end(JSON.stringify(data));
     // add on data for filter
   } else {
@@ -77,12 +95,6 @@ var requestHandler = function(request, response) {
 //
 // Another way to get around this restriction is to serve you chat
 // client from this domain by setting up static file serving.
-var defaultCorsHeaders = {
-  'access-control-allow-origin': '*',
-  'access-control-allow-methods': 'GET, POST, PUT, DELETE, OPTIONS',
-  'access-control-allow-headers': 'content-type, accept',
-  'access-control-max-age': 10 // Seconds.
-};
 
 exports.requestHandler = requestHandler;
 
