@@ -1,7 +1,27 @@
-var url = require('url');
+var urlParser = require('url');
+var fs = require('fs');
 
-const data = {
-  results: []
+var readMessage = (cb, body) => {
+  fs.readFile('database.txt', (err, data) => {
+    if (err) {
+      return console.error(err);
+    }
+    cb(data, body);
+  });
+};
+
+var writeMessage = (message) => {
+  readMessage((data) => {
+    data = JSON.parse(data);
+    data.results.push(message);
+    console.log(data);
+    fs.writeFile('database.txt', JSON.stringify(data), (err) => {
+      if (err) {
+        return console.error(err);
+      }
+      console.log('The file has been saved!');
+    });
+  });
 };
 
 var headers = {
@@ -22,15 +42,17 @@ var parseData = (request, response) => {
   request.on('data', (chunk) => {
     body += chunk;
   }).on('end', () => {
-    body = JSON.parse(body);
-    body.createdAt = new Date();
-    body.objectId = data.results.length;
-    data.results.push(body);
-    let responseData = {
-      createdAt: body.createAt,
-      objectId: body.objectId
-    };
-    sendResponse(response, responseData, 201);
+    readMessage((data, body) => {
+      body = JSON.parse(body);
+      body.createdAt = new Date();
+      body.objectId = JSON.parse(data).results.length;
+      writeMessage(body);
+      let responseData = {
+        createdAt: body.createAt,
+        objectId: body.objectId
+      };
+      sendResponse(response, responseData, 201);
+    }, body);
   });  
 };
 
@@ -39,8 +61,8 @@ const params = {
     data.results.sort((a, b) => {
       let sort = query.order;
       return sort[0] === '-' 
-        ? b[sort.slice(1)] - a[sort.slice(1)] 
-        : a[sort] - b[sort];
+        ? Date.parse(b[sort.slice(1)]) - Date.parse(a[sort.slice(1)])
+        : Date.parse(a[sort]) - Date.parse(b[sort]);
     });  
   },
   key: (data, query) => {
@@ -61,19 +83,23 @@ const responses = {
     parseData(request, response);
   },
   GET: (request, response) => {
-    var query = url.parse(request.url, true).query;
+    var query = urlParser.parse(request.url, true).query;
     if (Object.keys(query).length > 0) {
-      let queryData = {
-        results: data.results.slice()
-      };
-      for (let key in query) {
-        if (params[key]) {
-          params[key](queryData, query);
+      readMessage((data, body) => {
+        let queryData = {
+          results: JSON.parse(data).results.slice()
+        };
+        for (let key in body) {
+          if (params[key]) {
+            params[key](queryData, body);
+          }
         }
-      }
-      sendResponse(response, queryData, 203);
+        sendResponse(response, queryData, 203);
+      }, query);
     } else {
-      sendResponse(response, data);
+      readMessage((data) => {
+        sendResponse(response, JSON.parse(data));
+      });
     }    
   },
   OPTIONS: (request, response) => {
